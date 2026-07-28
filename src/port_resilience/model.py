@@ -16,6 +16,7 @@ class Berth:
     depth_m: float
     allowed_ship_types: frozenset[str] = frozenset()
     military_reserved: bool = False
+    terminal: str | None = None
 
 
 @dataclass(frozen=True)
@@ -30,6 +31,7 @@ class Vessel:
     ship_type: str
     original_berth: str | None = None
     deadline_hour: float | None = None
+    allowed_terminals: frozenset[str] = frozenset()
 
 
 @dataclass(frozen=True)
@@ -86,6 +88,8 @@ def berth_is_compatible(vessel: Vessel, berth: Berth) -> bool:
     if vessel.loa_m > berth.length_m or vessel.draft_m > berth.depth_m:
         return False
     if berth.military_reserved and vessel.identity != "military":
+        return False
+    if vessel.allowed_terminals and berth.terminal not in vessel.allowed_terminals:
         return False
     return not berth.allowed_ship_types or vessel.ship_type in berth.allowed_ship_types
 

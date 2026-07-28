@@ -38,6 +38,20 @@ class PublicPriorityBaselineTest(unittest.TestCase):
         entries = [assignment.channel_entry_hour for assignment in result.assignments]
         self.assertEqual(entries, [6, 6.25, 6.5])
 
+    def test_cross_terminal_reassignment_is_not_implicit(self) -> None:
+        berths = (
+            Berth("1068", 300, 14, frozenset({"container"}), terminal="CT3"),
+            Berth("1075", 320, 14, frozenset({"container"}), terminal="CT5"),
+        )
+        vessel = Vessel(
+            "V1", "commercial", 1, 1, 2, 200, 10, "container", "1068",
+            allowed_terminals=frozenset({"CT3"}),
+        )
+        outage = (BerthOutage("1068", 0, 24),)
+        result = schedule_public_priority((vessel,), berths, self.window, outage)
+        self.assertEqual(result.assignments, ())
+        self.assertEqual(result.unscheduled_ship_ids, ("V1",))
+
 
 if __name__ == "__main__":
     unittest.main()
