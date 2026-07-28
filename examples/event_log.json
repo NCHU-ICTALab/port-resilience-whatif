@@ -1,0 +1,95 @@
+{
+  "schema_version": "resilience.event-log.v1",
+  "scenario_id": "khh-resilience-demo-001",
+  "candidate_id": "handwritten-frontend-fixture",
+  "events": [
+    {
+      "t": 0,
+      "type": "scenario_started",
+      "source": "scenario_input"
+    },
+    {
+      "t": 3600,
+      "type": "arrive_anchorage",
+      "ship_id": "V023",
+      "from_state": "approaching",
+      "to_state": "anchored",
+      "source": "fixture",
+      "provenance": "estimated"
+    },
+    {
+      "t": 21600,
+      "type": "window_open",
+      "window_id": "window-a",
+      "source": "scenario_input"
+    },
+    {
+      "t": 21600,
+      "type": "convoy_release",
+      "window_id": "window-a",
+      "ship_id": "M001",
+      "release_order": 1,
+      "from_state": "convoy_ready",
+      "to_state": "released",
+      "source": "optimizer"
+    },
+    {
+      "t": 22500,
+      "type": "channel_enter",
+      "window_id": "window-a",
+      "ship_id": "M001",
+      "from_state": "released",
+      "to_state": "in_channel",
+      "source": "optimizer"
+    },
+    {
+      "t": 23400,
+      "type": "berth_start",
+      "ship_id": "M001",
+      "berth_code": "1068",
+      "from_state": "in_channel",
+      "to_state": "berthed",
+      "source": "optimizer"
+    },
+    {
+      "t": 27000,
+      "type": "window_close",
+      "window_id": "window-a",
+      "source": "scenario_input"
+    },
+    {
+      "t": 36000,
+      "type": "berth_state_changed",
+      "berth_code": "1068",
+      "from_state": "normal",
+      "to_state": "fully_damaged",
+      "capacity_loss_fraction": 1.0,
+      "source": "scenario_input"
+    },
+    {
+      "t": 36100,
+      "type": "reoptimization_triggered",
+      "reason": "berth_state_changed",
+      "source": "system"
+    },
+    {
+      "t": 36200,
+      "type": "assignment_changed",
+      "ship_id": "V023",
+      "original_berth": "1068",
+      "new_berth": "1069",
+      "delay_hours": 4.2,
+      "reason_codes": [
+        "ORIGINAL_BERTH_FULLY_DAMAGED",
+        "ALTERNATIVE_BERTH_COMPATIBLE",
+        "ALTERNATIVE_OCCUPIED_UNTIL_1430"
+      ],
+      "source": "optimizer",
+      "provenance": {
+        "damage": "scenario_input",
+        "compatibility": "observed",
+        "availability": "estimated"
+      }
+    }
+  ]
+}

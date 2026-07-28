@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# Source datasets stay local until licensing and disclosure are reviewed.
+data/*
+!data/README.md
+
+# Generated optimization and audit artifacts.
+out/
+reports/*.json
+
+# Editors and operating systems.
+.vscode/
+.idea/
+.DS_Store

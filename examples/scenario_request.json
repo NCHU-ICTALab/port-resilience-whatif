@@ -1,0 +1,90 @@
+{
+  "schema_version": "resilience.scenario.v1",
+  "request_id": "khh-resilience-demo-001",
+  "observed_at": "2026-08-01T00:00:00+08:00",
+  "horizon_hours": 72,
+  "preset": "wartime_convoy_batch",
+  "mode": "rolling_receding_horizon",
+  "freeze_horizon_minutes": 45,
+  "shock": {
+    "berth_events": [
+      {
+        "berth_code": "1068",
+        "state": "fully_damaged",
+        "start_hour": 10,
+        "duration_hours": 48,
+        "capacity_loss_fraction": 1.0,
+        "clear_immediately": false,
+        "allow_current_vessel_to_finish": true,
+        "recovery_curve": "instant",
+        "provenance": "scenario_input"
+      }
+    ],
+    "arrival_rate_multiplier": 0.8,
+    "tug_capacity_multiplier": 0.75,
+    "pilot_capacity_multiplier": 0.75
+  },
+  "safety_windows": [
+    {
+      "id": "window-a",
+      "start_hour": 6,
+      "end_hour": 7.5,
+      "max_releases": 5,
+      "channel_headway_minutes": 15
+    },
+    {
+      "id": "window-b",
+      "start_hour": 12,
+      "end_hour": 13.5,
+      "max_releases": 5,
+      "channel_headway_minutes": 15
+    },
+    {
+      "id": "window-c",
+      "start_hour": 18,
+      "end_hour": 19,
+      "max_releases": 3,
+      "channel_headway_minutes": 15
+    }
+  ],
+  "resources": {
+    "anchorage_capacity": 20,
+    "channel_capacity": 1,
+    "tug_capacity": 8,
+    "pilot_capacity": 3
+  },
+  "vessels": [
+    {
+      "ship_id": "M001",
+      "identity": "military",
+      "state": "convoy_ready",
+      "eta": "2026-08-01T05:30:00+08:00",
+      "deadline": "2026-08-01T07:30:00+08:00",
+      "original_berth": "1068",
+      "allow_delay": false,
+      "allow_diversion": false
+    },
+    {
+      "ship_id": "V023",
+      "identity": "commercial",
+      "state": "anchored",
+      "eta": "2026-08-01T04:00:00+08:00",
+      "deadline": null,
+      "original_berth": "1068",
+      "allow_delay": true,
+      "allow_diversion": true
+    }
+  ],
+  "objectives": [
+    "military_schedule_deviation",
+    "commercial_wait_hours",
+    "makespan"
+  ],
+  "preference_profiles": {
+    "military_priority": [0.7, 0.2, 0.1],
+    "port_resilience": [0.3, 0.5, 0.2],
+    "ship_friendly": [0.3, 0.2, 0.5],
+    "balanced": [0.34, 0.33, 0.33]
+  },
+  "baselines": ["fcfs", "public_priority_rules", "vts_rules_emulation"]
+}

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "port-resilience-whatif"
+version = "0.1.0"
+description = "All-hazards port capacity impact and commercial-vessel reallocation PoC"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+api = [
+  "fastapi>=0.110,<1",
+  "uvicorn>=0.29,<1",
+]
+optimizer = [
+  "numpy>=1.26,<3",
+  "ortools>=9.10,<10",
+  "pymoo>=0.6,<1",
+]
+dev = [
+  "pytest>=8,<10",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["port_resilience"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
