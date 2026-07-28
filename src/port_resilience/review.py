@@ -107,6 +107,12 @@ def build_review_packet(
     military_count = sum(
         item.vessel.identity == "military" for item in case.vessels
     )
+    overlay = case.metadata.get("military_overlay", {})
+    authority = overlay.get("authority") if isinstance(overlay, dict) else None
+    authority_status = (
+        authority.get("status") if isinstance(authority, dict) else "not_supplied"
+    )
+    port_controls = overlay.get("port_controls", []) if isinstance(overlay, dict) else []
     return {
         "schema_version": "resilience.human_review.v1",
         "review_status": "awaiting_human_evaluation",
@@ -170,6 +176,15 @@ def build_review_packet(
                 "status": "missing" if military_count == 0 else "provided_as_scenario_input",
                 "question": "請輸入或確認軍事船舶、預定時程、deadline、保留泊位與不可延誤任務。",
                 "impact": "未提供時，軍方排程偏離目標固定為 0，不能作商軍戰時方案驗收。",
+            },
+            {
+                "id": "port_requisition_controls",
+                "status": authority_status,
+                "question": "請確認 port_controls 的核定狀態、適用泊位、起訖時間與清空政策。",
+                "impact": (
+                    f"目前載入 {len(port_controls)} 個控制；draft_preview 只能作 what-if，"
+                    "不可標示為已核准排程。"
+                ),
             },
             {
                 "id": "arrival_semantics",

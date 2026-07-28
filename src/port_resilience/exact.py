@@ -109,7 +109,13 @@ def solve_cp_sat(
                 for berth in berths:
                     if not berth_is_compatible(vessel, berth):
                         continue
-                    if berth_has_outage(berth.code, start_hour, end_minute / 60, outages):
+                    if berth_has_outage(
+                        berth.code,
+                        start_hour,
+                        end_minute / 60,
+                        outages,
+                        vessel.identity,
+                    ):
                         continue
                     selected = model.new_bool_var(
                         f"x_{vessel.ship_id}_{berth.code}_{window.window_id}_{slot_index}"

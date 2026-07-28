@@ -116,7 +116,9 @@ def decode_genome(
                     continue
                 end_hour = start_hour + vessel.service_hours
                 for berth in berth_order:
-                    if berth_has_outage(berth.code, start_hour, end_hour, outages):
+                    if berth_has_outage(
+                        berth.code, start_hour, end_hour, outages, vessel.identity
+                    ):
                         continue
                     if any(
                         intervals_overlap(start_hour, end_hour, occupied_start, occupied_end)

@@ -13,7 +13,13 @@
       {
         "berth_code": "1068",
         "start_hour": 10,
-        "end_hour": 58
+        "end_hour": 58,
+        "blocked_identities": [
+          "military",
+          "commercial"
+        ],
+        "reason": "damage_or_unavailable",
+        "control_id": null
       }
     ],
     "source_metadata": {
@@ -50,7 +56,7 @@
     "generations": 80,
     "evaluations": 6400,
     "seed": 42,
-    "wall_time_seconds": 3.319,
+    "wall_time_seconds": 3.369,
     "pareto_candidates": 1,
     "throughput_acceptance_floor": 20,
     "profile_recommendations": {
@@ -649,6 +655,12 @@
       "status": "missing",
       "question": "請輸入或確認軍事船舶、預定時程、deadline、保留泊位與不可延誤任務。",
       "impact": "未提供時，軍方排程偏離目標固定為 0，不能作商軍戰時方案驗收。"
+    },
+    {
+      "id": "port_requisition_controls",
+      "status": "not_supplied",
+      "question": "請確認 port_controls 的核定狀態、適用泊位、起訖時間與清空政策。",
+      "impact": "目前載入 0 個控制；draft_preview 只能作 what-if，不可標示為已核准排程。"
     },
     {
       "id": "arrival_semantics",

@@ -31,6 +31,8 @@
 [比較與驗證規約](docs/COMPARISON_PROTOCOL.md)。正式產品定義與第一版驗收情境見
 [系統規格](docs/SYSTEM_SPEC.md)，演算法落地順序見
 [演算法計畫](docs/ALGORITHM_PLAN.md)。
+公開制度如何轉成軍事優先、分時專用與徵用生命週期，見
+[戰時港口徵用研究](docs/WARTIME_PORT_REQUISITION.md)。
 
 ## 人工評估
 

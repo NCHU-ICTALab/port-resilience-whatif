@@ -57,7 +57,9 @@ def schedule_public_priority(
                     berth_end = berth_start + vessel.service_hours
                     if berth_available[berth.code] > berth_start:
                         continue
-                    if berth_has_outage(berth.code, berth_start, berth_end, outages):
+                    if berth_has_outage(
+                        berth.code, berth_start, berth_end, outages, vessel.identity
+                    ):
                         continue
                     if vessel.deadline_hour is not None and berth_start > vessel.deadline_hour:
                         continue

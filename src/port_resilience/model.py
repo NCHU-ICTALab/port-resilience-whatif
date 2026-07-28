@@ -40,6 +40,9 @@ class BerthOutage:
     berth_code: str
     start_hour: float
     end_hour: float
+    blocked_identities: tuple[Identity, ...] = ("military", "commercial")
+    reason: str = "damage_or_unavailable"
+    control_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -100,9 +103,11 @@ def berth_has_outage(
     start_hour: float,
     end_hour: float,
     outages: tuple[BerthOutage, ...],
+    identity: Identity | None = None,
 ) -> bool:
     return any(
         outage.berth_code == berth_code
+        and (identity is None or identity in outage.blocked_identities)
         and intervals_overlap(start_hour, end_hour, outage.start_hour, outage.end_hour)
         for outage in outages
     )

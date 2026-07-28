@@ -74,6 +74,7 @@ def validate_schedule(
             assignment.berth_start_hour,
             assignment.berth_end_hour,
             outages,
+            vessel.identity,
         ):
             violations.append(f"BERTH_OUTAGE:{assignment.ship_id}:{berth.code}")
         if (

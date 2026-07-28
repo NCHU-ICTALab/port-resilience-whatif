@@ -50,6 +50,7 @@ class ReviewPacketTest(unittest.TestCase):
         ))
         required = {item["id"]: item for item in packet["required_human_inputs"]}
         self.assertEqual(required["military_missions"]["status"], "missing")
+        self.assertEqual(required["port_requisition_controls"]["status"], "not_supplied")
         self.assertIsNone(packet["human_decision"]["selected_candidate_id"])
 
     def test_human_military_overlay_activates_military_objective(self) -> None:
@@ -73,6 +74,10 @@ class ReviewPacketTest(unittest.TestCase):
         required = {item["id"]: item for item in packet["required_human_inputs"]}
         self.assertEqual(
             required["military_missions"]["status"], "provided_as_scenario_input"
+        )
+        self.assertEqual(
+            required["port_requisition_controls"]["status"],
+            "human_approved_scenario",
         )
         self.assertTrue(all(
             candidate["feasibility"]["verified"]

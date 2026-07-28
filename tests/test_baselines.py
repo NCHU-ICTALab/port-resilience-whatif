@@ -52,6 +52,23 @@ class PublicPriorityBaselineTest(unittest.TestCase):
         self.assertEqual(result.assignments, ())
         self.assertEqual(result.unscheduled_ship_ids, ("V1",))
 
+    def test_military_exclusive_period_blocks_only_commercial_vessel(self) -> None:
+        vessels = (
+            Vessel("M1", "military", 1, 1, 2, 200, 10, "container", "1068", 7),
+            Vessel("V1", "commercial", 1, 1, 2, 200, 10, "container", "1068"),
+        )
+        restriction = (
+            BerthOutage(
+                "1068", 0, 24,
+                blocked_identities=("commercial",),
+                reason="military_exclusive",
+                control_id="R001",
+            ),
+        )
+        result = schedule_public_priority(vessels, self.berths[:1], self.window, restriction)
+        self.assertEqual([item.ship_id for item in result.assignments], ["M1"])
+        self.assertEqual(result.unscheduled_ship_ids, ("V1",))
+
 
 if __name__ == "__main__":
     unittest.main()

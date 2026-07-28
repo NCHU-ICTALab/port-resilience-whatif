@@ -1,4 +1,9 @@
 {
-  "schema_version": "resilience.military-input.v1",
-  "missions": []
+  "schema_version": "resilience.military-input.v2",
+  "authority": {
+    "status": "draft_preview",
+    "reference": null
+  },
+  "missions": [],
+  "port_controls": []
 }

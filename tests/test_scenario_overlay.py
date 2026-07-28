@@ -1,7 +1,7 @@
 import unittest
 
 from port_resilience.data_adapter import HistoricalCase
-from port_resilience.model import Berth, SafetyWindow
+from port_resilience.model import Berth, SafetyWindow, berth_has_outage
 from port_resilience.scenario_overlay import apply_military_input
 
 
@@ -37,6 +37,44 @@ class MilitaryOverlayTest(unittest.TestCase):
             apply_military_input(self.case, {
                 "schema_version": "resilience.military-input.v1",
                 "missions": [mission],
+            })
+
+    def test_v2_military_exclusive_control_blocks_only_commercial(self) -> None:
+        updated = apply_military_input(self.case, {
+            "schema_version": "resilience.military-input.v2",
+            "authority": {"status": "draft_preview", "reference": None},
+            "missions": [self.mission],
+            "port_controls": [{
+                "control_id": "R001",
+                "mode": "military_exclusive",
+                "berth_codes": ["A"],
+                "start_hour": 6,
+                "end_hour": 12,
+                "allow_current_vessel_to_finish": True,
+                "clear_before_start": False,
+            }],
+        })
+        self.assertTrue(berth_has_outage("A", 7, 8, updated.outages, "commercial"))
+        self.assertFalse(berth_has_outage("A", 7, 8, updated.outages, "military"))
+        overlay = updated.metadata["military_overlay"]
+        self.assertEqual(overlay["authority"]["status"], "draft_preview")
+        self.assertEqual(overlay["port_controls"][0]["mode"], "military_exclusive")
+
+    def test_v2_rejects_conflicting_clearing_policy(self) -> None:
+        with self.assertRaisesRegex(ValueError, "cannot both"):
+            apply_military_input(self.case, {
+                "schema_version": "resilience.military-input.v2",
+                "authority": {"status": "exercise_input", "reference": "EX-1"},
+                "missions": [],
+                "port_controls": [{
+                    "control_id": "R001",
+                    "mode": "closed",
+                    "berth_codes": ["A"],
+                    "start_hour": 6,
+                    "end_hour": 12,
+                    "allow_current_vessel_to_finish": True,
+                    "clear_before_start": True,
+                }],
             })
 
 
