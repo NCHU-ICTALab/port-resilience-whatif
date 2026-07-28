@@ -57,10 +57,14 @@ proxy；`pass_port_time` 僅作事後 truth，不提供給排程器。
   --start 2026-07-05T00:00:00 --limit 20 --time-limit 30
 ```
 
-## Stage 3：NSGA-II
+## Stage 3：NSGA-II（已實作第一版，等待情境擁有者輸入）
 
 染色體同時編碼船序、窗口與泊位；repair operator 只修復可修復的表示問題，真正安全限制
 仍由共用 feasibility checker 驗證。三目標為軍事排程偏離、商船等待與 makespan。
+
+已加入公開規則 throughput floor、獨立硬限制重算、相同 objective vector 去重、四種偏好
+排序與 `resilience.human_review.v1` 人工評估封包。實跑結果與待確認項目見
+[Stage 3 結果](STAGE3_RESULTS.md)，軍事任務格式見[軍事任務情境輸入](MILITARY_INPUT.md)。
 
 ## Stage 4：配對比較
 

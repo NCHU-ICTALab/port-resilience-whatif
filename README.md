@@ -32,6 +32,23 @@
 [系統規格](docs/SYSTEM_SPEC.md)，演算法落地順序見
 [演算法計畫](docs/ALGORITHM_PLAN.md)。
 
+## 人工評估
+
+目前已可產生通過模型硬限制檢查的 NSGA-II 候選與 `resilience.human_review.v1` 評估封包：
+
+```bash
+.venv/bin/python -m port_resilience.review \
+  --movements-db ../sdci_data/ua1008l.sqlite \
+  --berth-specs ../sdci_data/berth_specs.json \
+  --start 2026-07-05T00:00:00 --limit 20 \
+  --population 80 --generations 80 --seed 42 \
+  --output examples/human_review_packet.json
+```
+
+範例輸出見 [human_review_packet.json](examples/human_review_packet.json)。目前歷史資料沒有軍事
+任務，因此正式商軍 Pareto 評估前，情境擁有者需依[軍事任務輸入格式](docs/MILITARY_INPUT.md)
+提供 deadline、預定時程、尺寸與可用 terminal。系統不會自行生成軍事需求。
+
 ## 與既有專案的關係
 
 ```text
