@@ -24,6 +24,9 @@ dev = [
   "pytest>=8,<10",
 ]
 
+[project.scripts]
+port-resilience-demo = "port_resilience.demo:main"
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 packages = ["port_resilience"]
