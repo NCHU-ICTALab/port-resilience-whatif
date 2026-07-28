@@ -27,6 +27,7 @@ dev = [
 [project.scripts]
 port-resilience-demo = "port_resilience.demo:main"
 port-resilience-build-case = "port_resilience.data_adapter:main"
+port-resilience-compare = "port_resilience.compare:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

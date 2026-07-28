@@ -39,10 +39,23 @@ proxy；`pass_port_time` 僅作事後 truth，不提供給排程器。
 
 實跑結果與限制見 [Stage 1 結果](STAGE1_RESULTS.md)。
 
-## Stage 2：CP-SAT oracle
+## Stage 2：CP-SAT oracle（已實作第一版）
 
 先做 8–20 艘、3–6 泊位的小型 instance：optional interval、no-overlap、alternative berth、
 安全窗口與軍事 deadline。輸出 exact objective 或 optimality gap，作為共用硬限制的驗證器。
+
+目前 `port_resilience.exact.solve_cp_sat` 使用分鐘整數尺度與固定安全窗口 release slots。
+目標採字典序尺度：先減少未服務商船，再減少軍事預定時間偏離、商船等待、makespan 與改泊。
+軍事任務必須排入且 deadline 是硬限制；若無可行安排，明確回傳 `INFEASIBLE`。
+實跑結果與可解規模限制見 [Stage 2 結果](STAGE2_RESULTS.md)。
+
+```bash
+.venv/bin/python -m pytest tests/test_exact.py -v
+.venv/bin/python -m port_resilience.compare \
+  --movements-db ../sdci_data/ua1008l.sqlite \
+  --berth-specs ../sdci_data/berth_specs.json \
+  --start 2026-07-05T00:00:00 --limit 20 --time-limit 30
+```
 
 ## Stage 3：NSGA-II
 

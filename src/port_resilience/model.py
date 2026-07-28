@@ -32,6 +32,7 @@ class Vessel:
     original_berth: str | None = None
     deadline_hour: float | None = None
     allowed_terminals: frozenset[str] = frozenset()
+    planned_start_hour: float | None = None
 
 
 @dataclass(frozen=True)
